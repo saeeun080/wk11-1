@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Let's Describe It!</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;800&display=swap');
+
+:root {
+  --blue:#5489e8;
+  --light:#edf4ff;
+  --purple:#8d78d9;
+  --ink:#29354a;
+  --muted:#778398;
+  --green:#36a77a;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:#f4f6fc;
+  color:var(--ink);
+  font-family:'Noto Sans KR',sans-serif;
+}
+header {
+  background:linear-gradient(125deg,#648ee9,#927bdc);
+  color:white;
+  padding:34px 20px 38px;
+  text-align:center;
+}
+header h1 {
+  font-family:'Jua',sans-serif;
+  font-size:35px;
+  margin:0 0 10px;
+}
+header p {margin:0;font-size:14px;opacity:.95}
+.container {max-width:850px;margin:25px auto;padding:0 16px 50px}
+.progress-wrap {
+  background:white;padding:17px 20px;border-radius:16px;
+  margin-bottom:20px;box-shadow:0 3px 14px #29354a0b;
+}
+.progress-label {display:flex;justify-content:space-between;font-size:13px;font-weight:700}
+.progress-bg {height:9px;background:#e9edf5;border-radius:20px;margin-top:10px;overflow:hidden}
+.progress-fill {height:100%;background:linear-gradient(90deg,#6396ed,#a38be9);width:0%;transition:.3s}
+.tabs {display:flex;gap:10px;margin-bottom:20px}
+.tab {
+  flex:1;border:0;padding:14px 8px;border-radius:13px;
+  background:white;color:#68748b;font-weight:800;cursor:pointer;
+  font-size:14px;
+}
+.tab.active {background:#e5edff;color:#4275d6;outline:2px solid #b9cefa}
+.card {
+  background:white;border-radius:20px;padding:23px;
+  box-shadow:0 4px 18px #29354a0c;margin-bottom:17px;
+}
+.tag {
+  display:inline-block;background:#eef2ff;color:#657fd2;
+  border-radius:20px;padding:6px 12px;font-size:12px;font-weight:800;
+}
+h2 {font-size:21px;margin:13px 0 7px}
+.desc {color:var(--muted);font-size:13px;line-height:1.7}
+.scene {
+  background:linear-gradient(140deg,#e7f2ff,#f1edff);
+  border-radius:18px;padding:25px 12px;margin:18px 0;
+  text-align:center;min-height:190px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.scene-emoji {font-size:75px;line-height:1.4}
+.scene-title {font-family:'Jua',sans-serif;font-size:21px;margin-top:8px;color:#526baf}
+.scene-sub {font-size:12px;color:#78849a;margin-top:6px}
+.question {
+  background:#fff8e9;border-left:4px solid #f2c36c;
+  padding:15px;border-radius:9px;font-size:14px;line-height:1.8;
+}
+.question strong {color:#b17b2b}
+h3 {font-size:15px;margin:21px 0 10px}
+.word-list {display:flex;flex-wrap:wrap;gap:8px}
+.word {
+  background:#f0f4ff;color:#536fae;border-radius:9px;
+  padding:8px 12px;font-size:13px;font-weight:700;
+}
+.word small {color:#8894a9;font-weight:400;margin-left:4px}
+textarea {
+  width:100%;min-height:120px;border:1.5px solid #dce2ed;
+  border-radius:12px;padding:15px;font-family:inherit;
+  font-size:14px;line-height:1.8;resize:vertical;outline:none;
+}
+textarea:focus {border-color:#789ce8}
+button {
+  font-family:inherit;cursor:pointer;border:0;font-weight:700;
+}
+.primary {
+  background:var(--blue);color:white;padding:13px 20px;
+  border-radius:11px;font-size:14px;
+}
+.secondary {
+  background:#eef2fa;color:#52627b;padding:12px 17px;
+  border-radius:11px;font-size:13px;
+}
+.record {
+  background:#fff0f0;color:#d45c6b;padding:13px 20px;
+  border-radius:11px;font-size:14px;
+}
+.record.recording {background:#d94d61;color:white;animation:pulse 1s infinite}
+@keyframes pulse {50%{opacity:.65}}
+.actions {display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+.result {
+  display:none;background:#f0f9f5;border:1px solid #ccebdc;
+  border-radius:13px;padding:17px;margin-top:15px;
+  line-height:1.8;font-size:13px;
+}
+.result h3 {margin:0 0 8px;color:#26875f}
+.result p {margin:5px 0}
+.feedback {color:#29815e;font-weight:700}
+.example {
+  display:none;background:#f5f3ff;border-radius:12px;
+  padding:15px;margin-top:12px;font-size:13px;line-height:1.9;
+}
+.example strong {color:#7764c4}
+.nav {display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.nav button {flex:1}
+.tip {font-size:12px;color:#8993a4;line-height:1.7;margin-top:12px}
+#speechStatus {font-size:12px;color:#d45c6b;margin-top:10px}
+footer {text-align:center;color:#9aa4b5;font-size:12px;padding:15px}
+@media(max-width:500px) {
+ header h1{font-size:29px}
+ .card{padding:17px}
+ .scene-emoji{font-size:62px}
+ .tabs{gap:6px}
+ .tab{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌈 Let's Describe It!</h1>
+  <p>Look at the picture, think in English, and describe it!</p>
+  <p style="margin-top:8px">그림과 상황을 영어로 설명하며 말하기와 쓰기 실력을 키워봐요.</p>
+</header>
+
+<div class="container">
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>📚 My Learning Progress</span>
+      <span id="progressText">0 / 8 완료</span>
+    </div>
+    <div class="progress-bg">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setMode('picture',this)">🖼️ 그림 설명</button>
+    <button class="tab" onclick="setMode('situation',this)">💬 상황 설명</button>
+  </div>
+
+  <div class="card">
+    <span class="tag" id="category">PICTURE DESCRIPTION</span>
+    <h2 id="promptTitle">What is happening in the picture?</h2>
+    <p class="desc" id="promptDesc">그림을 자세히 관찰하고 영어로 설명해 보세요.</p>
+
+    <div class="scene">
+      <div class="scene-emoji" id="sceneEmoji">🌳👧📖</div>
+      <div class="scene-title" id="sceneTitle">A Day in the Park</div>
+      <div class="scene-sub" id="sceneSub">Look carefully at the picture!</div>
+    </div>
+
+    <div class="question">
+      <strong>💡 Your Mission</strong>
+      <div id="mission" style="margin-top:5px">
+        What is the girl doing? Where is she? How does she feel?
+      </div>
+    </div>
+
+    <h3>🔑 Helpful Words</h3>
+    <div class="word-list" id="wordList"></div>
+
+    <h3>✏️ Useful Expressions</h3>
+    <div class="word-list" id="expressionList"></div>
+
+    <div class="example" id="example">
+      <strong>Example Answer</strong>
+      <p id="exampleText"></p>
+    </div>
+    <button class="secondary" style="margin-top:12px" onclick="toggleExample()">예시 답안 보기 / 숨기기</button>
+  </div>
+
+  <div class="card">
+    <span class="tag">STEP 1 · SPEAKING</span>
+    <h2>🎤 Speak in English!</h2>
+    <p class="desc">그림이나 상황을 보고 영어로 설명해 보세요. 마이크 버튼을 누르고 말하면 텍스트로 변환됩니다.</p>
+
+    <div class="actions">
+      <button class="record" id="recordBtn" onclick="toggleRecording()">🎙️ 녹음 시작</button>
+      <button class="secondary" onclick="document.getElementById('speechText').value='';">초기화</button>
+    </div>
+    <div id="speechStatus">마이크를 눌러 영어로 말해 보세요.</div>
+    <textarea id="speechText" placeholder="Your English speech will appear here..."></textarea>
+    <div class="tip">※ 음성 인식은 Chrome 등 지원 브라우저에서 사용할 수 있습니다. 마이크 권한이 필요하며, 지원되지 않는 경우 직접 입력해도 됩니다.</div>
+    <button class="primary" style="margin-top:13px" onclick="checkAnswer('speech')">내 말하기 확인하기</button>
+    <div class="result" id="speechResult"></div>
+  </div>
+
+  <div class="card">
+    <span class="tag">STEP 2 · WRITING</span>
+    <h2>📝 Write in English!</h2>
+    <p class="desc">이번에는 그림이나 상황을 영어 문장으로 작성해 보세요. 최소 3문장 이상 작성하는 것을 추천합니다.</p>
+    <textarea id="writeText" placeholder="I can see a girl in the picture.&#10;She is reading a book.&#10;She looks happy..."></textarea>
+    <div style="display:flex;justify-content:space-between;margin-top:9px;font-size:12px;color:#8993a4">
+      <span>최소 3문장에 도전해 보세요!</span>
+      <span id="wordCount">0 words</span>
+    </div>
+    <button class="primary" style="margin-top:13px" onclick="checkAnswer('writing')">내 글 확인하기</button>
+    <div class="result" id="writingResult"></div>
+  </div>
+
+  <div class="card">
+    <span class="tag">STEP 3 · SELF-CHECK</span>
+    <h2>⭐ Check Your English!</h2>
+    <p class="desc">나의 영어 표현을 스스로 점검해 보세요.</p>
+    <div id="checkList" style="line-height:2.5;font-size:14px">
+      <label><input type="checkbox"> 그림이나 상황에 대해 설명했나요?</label><br>
+      <label><input type="checkbox"> 주어와 동사를 사용해 문장을 만들었나요?</label><br>
+      <label><input type="checkbox"> 다양한 영어 표현을 사용했나요?</label><br>
+      <label><input type="checkbox"> 문장의 첫 글자를 대문자로 썼나요?</label><br>
+      <label><input type="checkbox"> 문장 끝에 마침표를 썼나요?</label>
+    </div>
+    <button class="secondary" style="margin-top:10px" onclick="finishTask()">학습 완료하기 ✓</button>
+    <p id="finishMessage" class="feedback" style="font-size:13px"></p>
+  </div>
+
+  <div class="nav">
+    <button class="secondary" onclick="changePrompt(-1)">← 이전 문제</button>
+    <button class="primary" onclick="changePrompt(1)">다음 문제 →</button>
+  </div>
+
+</div>
+
+<footer>Let's Describe It! · Practice makes perfect 🌟</footer>
+
+<script>
+const picturePrompts = [
+{
+ title:"A Day in the Park",
+ emoji:"🌳👧📖",
+ sub:"A girl is spending time in a park.",
+ mission:"What is the girl doing? Where is she? How does she feel?",
+ words:[["park","공원"],["read","읽다"],["tree","나무"],["bench","벤치"],["happy","행복한"],["book","책"]],
+ expressions:["She is reading...","I can see...","She looks..."],
+ example:"A girl is sitting on a bench in the park. She is reading a book. There are many trees around her. She looks happy and relaxed."
+},
+{
+ title:"Cooking Together",
+ emoji:"👩‍🍳🍳🥕",
+ sub:"A family is preparing a meal.",
+ mission:"Who is cooking? What food can you see? What are they doing?",
+ words:[["kitchen","부엌"],["cook","요리하다"],["vegetable","채소"],["prepare","준비하다"],["family","가족"],["delicious","맛있는"]],
+ expressions:["They are cooking...","I can see...","They are preparing..."],
+ example:"A mother and her daughter are cooking together. They are in the kitchen. They are cutting vegetables. They look excited about their meal."
+},
+{
+ title:"A Rainy Day",
+ emoji:"🌧️☂️👦",
+ sub:"A boy is walking in the rain.",
+ mission:"What is the weather like? What is the boy holding? How might he feel?",
+ words:[["rainy","비가 오는"],["umbrella","우산"],["walk","걷다"],["wet","젖은"],["cloudy","흐린"],["street","거리"]],
+ expressions:["It is raining...","He is holding...","The weather is..."],
+ example:"It is a rainy day. A boy is walking down the street. He is holding a blue umbrella. The ground is wet. He is wearing a raincoat."
+},
+{
+ title:"At the Beach",
+ emoji:"🏖️🌊🏄",
+ sub:"Friends are enjoying a summer day.",
+ mission:"Where are the people? What activities are they doing? Describe the weather.",
+ words:[["beach","해변"],["swim","수영하다"],["wave","파도"],["sunny","화창한"],["sand","모래"],["enjoy","즐기다"]],
+ expressions:["They are enjoying...","The weather is...","Some people are..."],
+ example:"It is a sunny day at the beach. Some people are swimming in the sea. Two friends are playing with a ball. Everyone looks happy."
+}
+];
+
+const situationPrompts = [
+{
+ title:"You Lost Your Phone",
+ emoji:"📱😟🔍",
+ sub:"Imagine that you cannot find your phone.",
+ mission:"Where did you last see your phone? What will you do? Who can help you?",
+ words:[["lose","잃어버리다"],["phone","휴대폰"],["look for","찾다"],["remember","기억하다"],["ask","물어보다"],["worried","걱정하는"]],
+ expressions:["I can't find...","I think I left it...","I'm going to..."],
+ example:"I can't find my phone. I think I left it in my classroom. I'm going to look for it. I will also ask my friends for help."
+},
+{
+ title:"Your Friend Is Sad",
+ emoji:"👧💧🤝",
+ sub:"Your friend looks sad at school.",
+ mission:"Why might your friend be sad? What would you say? How can you help?",
+ words:[["sad","슬픈"],["friend","친구"],["listen","듣다"],["help","돕다"],["cheer up","기운을 북돋우다"],["together","함께"]],
+ expressions:["What's wrong?","Do you want to...","I can help you..."],
+ example:"My friend looks sad today. I will ask, 'What's wrong?' I will listen to my friend. We can talk together and I hope my friend feels better."
+},
+{
+ title:"Planning a Weekend",
+ emoji:"🗓️🎬🍕",
+ sub:"You are planning a fun weekend with a friend.",
+ mission:"What do you want to do? Where will you go? What time will you meet?",
+ words:[["weekend","주말"],["movie","영화"],["meet","만나다"],["restaurant","식당"],["plan","계획하다"],["together","함께"]],
+ expressions:["How about... ?","Let's go to...","We can meet at..."],
+ example:"I want to have fun this weekend. How about watching a movie? We can meet at the shopping mall at two o'clock. Then we can have pizza together."
+},
+{
+ title:"Helping at Home",
+ emoji:"🧹🏠🧺",
+ sub:"You need to help your family with housework.",
+ mission:"What chores can you do? Why is helping your family important?",
+ words:[["clean","청소하다"],["chores","집안일"],["wash","씻다"],["help","돕다"],["organize","정리하다"],["family","가족"]],
+ expressions:["I usually...","I can help by...","It is important to..."],
+ example:"I can help my family with housework. I usually clean my room and wash the dishes. I can also organize my desk. Helping my family is important."
+}
+];
+
+let mode="picture";
+let index=0;
+let completed=new Set();
+let recognition=null;
+let isRecording=false;
+
+function currentData(){
+ return mode==="picture"?picturePrompts[index]:situationPrompts[index];
+}
+
+function setMode(newMode,button){
+ mode=newMode;
+ index=0;
+ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+ button.classList.add("active");
+ render();
+}
+
+function render(){
+ const p=currentData();
+ document.getElementById("category").textContent=
+ mode==="picture"?"PICTURE DESCRIPTION":"SITUATION DESCRIPTION";
+ document.getElementById("promptTitle").textContent=p.title;
+ document.getElementById("promptDesc").textContent=
+ mode==="picture"?"그림을 자세히 관찰하고 영어로 설명해 보세요.":"상황을 상상하고 자신의 생각을 영어로 표현해 보세요.";
+ document.getElementById("sceneEmoji").textContent=p.emoji;
+ document.getElementById("sceneTitle").textContent=p.title;
+ document.getElementById("sceneSub").textContent=p.sub;
+ document.getElementById("mission").textContent=p.mission;
+
+ document.getElementById("wordList").innerHTML=
+ p.words.map(w=>`<span class="word">${w[0]} <small>${w[1]}</small></span>`).join("");
+ document.getElementById("expressionList").innerHTML=
+ p.expressions.map(e=>`<span class="word">${e}</span>`).join("");
+
+ document.getElementById("exampleText").textContent=p.example;
+ document.getElementById("example").style.display="none";
+
+ document.getElementById("speechText").value="";
+ document.getElementById("writeText").value="";
+ document.getElementById("speechResult").style.display="none";
+ document.getElementById("writingResult").style.display="none";
+ document.getElementById("speechStatus").textContent="마이크를 눌러 영어로 말해 보세요.";
+ document.getElementById("finishMessage").textContent="";
+ document.querySelectorAll("#checkList input").forEach(c=>c.checked=false);
+ updateCount();
+ updateProgress();
+ stopRecording();
+}
+
+function toggleExample(){
+ const el=document.getElementById("example");
+ el.style.display=el.style.display==="block"?"none":"block";
+}
+
+function updateCount(){
+ const text=document.getElementById("writeText").value.trim();
+ const count=text?text.split(/\s+/).length:0;
+ document.getElementById("wordCount").textContent=count+" words";
+}
+document.getElementById("writeText").addEventListener("input",updateCount);
+
+function checkAnswer(type){
+ const id=mode+"-"+index;
+ const text=document.getElementById(type==="speech"?"speechText":"writeText").value.trim();
+ const result=document.getElementById(type==="speech"?"speechResult":"writingResult");
+
+ result.style.display="block";
+
+ if(!text){
+ result.innerHTML="<h3>✏️ 먼저 영어로 표현해 보세요!</h3><p>단어와 문장 표현을 참고해서 답변을 작성해 보세요.</p>";
+ return;
+ }
+
+ const words=text.match(/[a-zA-Z]+(?:'[a-zA-Z]+)?/g)||[];
+ const sentences=text.split(/[.!?]+/).filter(s=>s.trim().length>0);
+ const lower=text.toLowerCase();
+ const used=pWords().filter(w=>lower.includes(w.toLowerCase()));
+ const hasSubjectVerb=/\b(i|he|she|they|we|it|there|this|that|people|some|my)\b/i.test(text);
+ const hasCapital=/^[A-Z]/.test(text);
+ const hasPunctuation=/[.!?]$/.test(text);
+
+ let feedback=[];
+ if(words.length>=25) feedback.push("다양한 단어를 사용했어요!");
+ else feedback.push("조금 더 자세하게 설명해 보세요.");
+ if(used.length>=2) feedback.push("핵심 어휘를 잘 활용했어요!");
+ else feedback.push("제시된 핵심 어휘를 더 활용해 보세요.");
+ if(sentences.length>=3) feedback.push("문장을 충분히 구성했어요!");
+ else feedback.push("문장을 3개 이상 만들어 보세요.");
+ if(hasSubjectVerb) feedback.push("주어와 동사를 활용했어요!");
+ if(hasCapital && hasPunctuation) feedback.push("대소문자와 문장부호도 확인했어요!");
+
+ result.innerHTML=`
+ <h3>🌟 Your Feedback</h3>
+ <p><strong>사용한 단어:</strong> ${words.length}개</p>
+ <p><strong>문장 수:</strong> ${sentences.length}개</p>
+ <p><strong>핵심 어휘:</strong> ${used.length?used.join(", "):"아직 사용하지 않았어요."}</p>
+ <hr style="border:0;border-top:1px solid #d7eadf;margin:12px 0">
+ ${feedback.map(f=>`<p class="feedback">✓ ${f}</p>`).join("")}
+ <p style="margin-top:12px;color:#527c68">정답이 하나만 있는 활동이 아니에요. 자신의 생각을 영어로 자유롭게 표현해 보세요!</p>
+ `;
+}
+
+function pWords(){
+ return currentData().words.map(w=>w[0]);
+}
+
+function toggleRecording(){
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SpeechRecognition){
+ document.getElementById("speechStatus").textContent=
+ "이 브라우저는 음성 인식을 지원하지 않습니다. 아래 입력창에 직접 작성해 주세요.";
+ return;
+ }
+ if(isRecording){
+ stopRecording();
+ return;
+ }
+
+ recognition=new SpeechRecognition();
+ recognition.lang="en-US";
+ recognition.interimResults=true;
+ recognition.continuous=true;
+
+ recognition.onstart=()=>{
+ isRecording=true;
+ document.getElementById("recordBtn").textContent="⏹️ 녹음 중지";
+ document.getElementById("recordBtn").classList.add("recording");
+ document.getElementById("speechStatus").textContent="🔴 Listening... Speak in English!";
+ };
+ recognition.onresult=(event)=>{
+ let finalText="";
+ let interim="";
+ for(let i=0;i<event.results.length;i++){
+ if(event.results[i].isFinal) finalText+=event.results[i][0].transcript+" ";
+ else interim+=event.results[i][0].transcript;
+ }
+ document.getElementById("speechText").value=finalText+interim;
+ };
+ recognition.onerror=(event)=>{
+ document.getElementById("speechStatus").textContent="음성 인식 오류: "+event.error+". 직접 입력할 수 있습니다.";
+ stopRecording();
+ };
+ recognition.onend=()=>{
+ isRecording=false;
+ document.getElementById("recordBtn").textContent="🎙️ 녹음 시작";
+ document.getElementById("recordBtn").classList.remove("recording");
+ if(document.getElementById("speechText").value.trim()){
+ document.getElementById("speechStatus").textContent="음성 인식이 완료되었습니다. 내용을 확인해 보세요!";
+ }
+ };
+ try{recognition.start();}
+ catch(e){document.getElementById("speechStatus").textContent="마이크를 다시 눌러 주세요.";}
+}
+
+function stopRecording(){
+ if(recognition){
+ try{recognition.stop();}catch(e){}
+ recognition=null;
+ }
+ isRecording=false;
+ const btn=document.getElementById("recordBtn");
+ btn.textContent="🎙️ 녹음 시작";
+ btn.classList.remove("recording");
+}
+
+function finishTask(){
+ const checks=[...document.querySelectorAll("#checkList input")];
+ const checked=checks.filter(c=>c.checked).length;
+ const id=mode+"-"+index;
+ if(checked===5){
+ completed.add(id);
+ document.getElementById("finishMessage").textContent="🎉 완벽해요! 이번 활동을 완료했습니다!";
+ }else{
+ document.getElementById("finishMessage").textContent=
+ `${checked}/5개 항목을 확인했어요. 나머지도 점검해 보세요!`;
+ }
+ updateProgress();
+}
+
+function updateProgress(){
+ const total=8;
+ document.getElementById("progressText").textContent=completed.size+" / "+total+" 완료";
+ document.getElementById("progressFill").style.width=(completed.size/total*100)+"%";
+}
+
+function changePrompt(direction){
+ stopRecording();
+ index+=direction;
+ const max=mode==="picture"?picturePrompts.length:situationPrompts.length;
+ if(index<0)index=max-1;
+ if(index>=max)index=0;
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+render();
+</script>
+</body>
+</html>
